@@ -1,34 +1,46 @@
 package org.example;
 
-import com.company.design.Sigleton.Aclazz;
-import com.company.design.Sigleton.BClazz;
-import com.company.design.Sigleton.SocketClient;
-import com.company.design.adapter.*;
+
+import org.example.adapter.*;
+import org.example.aop.AopBrowser;
+import org.example.proxy.Browser;
+import org.example.proxy.BrowserProxy;
+import org.example.proxy.IBrowser;
+import org.example.sigleton.*;
+
+import java.util.concurrent.atomic.AtomicLong;
 
 public class Main {
     public static void main(String[] args){
-        /*
-        Aclazz aclazz = new Aclazz();
-        BClazz bClazz = new BClazz();
 
-        SocketClient aClient = aclazz.getSocketClient();
-        SocketClient bClient = bClazz.getSocketClient();
+//        Browser browser = new Browser("www.naver.com");
+//        browser.show();
+//        browser.show();
+//        browser.show();
+//        browser.show();
 
-        System.out.println("두개의 객채가 동일한가?");
-        System.out.println(aClient.equals(bClient));
+//        IBrowser browser = new BrowserProxy("www.naver.com");
+//        browser.show();
+//        browser.show();
+//        browser.show();
+//        browser.show();
 
-         */
+        AtomicLong start = new AtomicLong();
+        AtomicLong end = new AtomicLong();
 
-        HairDryer hairDryer = new HairDryer();
-        connect(hairDryer);
+        IBrowser aopBrowser = new AopBrowser("www.naver.com", () -> {
+                        System.out.println("before");
+                        start.set(System.currentTimeMillis());
+                }, () -> {
+                        long now = System.currentTimeMillis();
+                        end.set(now-start.get());
+                });
 
-        Cleaner cleaner = new Cleaner();
-        Electronic110V adapter = new SocketAdapter(cleaner);    //adapter
-        connect(adapter);
+        aopBrowser.show();
+        System.out.println("loading time : "+end.get());
 
-        Airconditioner airconditioner = new Airconditioner();
-        Electronic110V airAdapter = new SocketAdapter(airconditioner);
-        connect(airAdapter);
+        aopBrowser.show();
+        System.out.println("loading time : "+end.get());
     }
     //콘센트
     public static void connect(Electronic110V electronic110V){
