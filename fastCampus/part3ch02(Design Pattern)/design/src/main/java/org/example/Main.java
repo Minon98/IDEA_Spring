@@ -4,6 +4,10 @@ package org.example;
 import org.example.adapter.*;
 import org.example.aop.AopBrowser;
 import org.example.decorator.*;
+import org.example.facade.Ftp;
+import org.example.facade.Reader;
+import org.example.facade.SftpClient;
+import org.example.facade.Writer;
 import org.example.observer.Button;
 import org.example.observer.IButtonListener;
 import org.example.proxy.Browser;
@@ -16,19 +20,27 @@ import java.util.concurrent.atomic.AtomicLong;
 public class Main {
     public static void main(String[] args){
 
-        Button button = new Button("버튼");
+        Ftp ftpClient = new Ftp("www.abc.co.kr", 22, "/home/etc");
+        ftpClient.connect();
+        ftpClient.moveDirectory();
 
-        button.addListener(new IButtonListener() {
-            @Override
-            public void clickEvent(String event) {
-                System.out.println(event);
-            }
-        });
+        Writer writer = new Writer("text.tmp");
+        writer.fileConnect();
+        writer.fileWrite();
 
-        button.click("메세지 전달 : click1");
-        button.click("메세지 전달 : click2");
-        button.click("메세지 전달 : click3");
-        button.click("메세지 전달 : click4");
+        Reader reader = new Reader("text.tmp");
+        reader.fileConnect();
+        reader.fileRead();
 
+        reader.fileDisconnect();
+        writer.fileDisconnect();
+        ftpClient.disConnect();
+
+        // facade
+        SftpClient sftpClient = new SftpClient("www.abc.co.kr", 22, "/home/etc", "text.tmp");
+        sftpClient.connect();
+        sftpClient.write();
+        sftpClient.read();
+        sftpClient.disConnect();
     }
 }
