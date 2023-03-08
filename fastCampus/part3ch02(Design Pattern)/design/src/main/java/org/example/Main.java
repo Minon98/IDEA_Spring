@@ -1,46 +1,32 @@
 package org.example;
 
 
-import org.example.adapter.*;
-import org.example.aop.AopBrowser;
-import org.example.decorator.*;
-import org.example.facade.Ftp;
-import org.example.facade.Reader;
-import org.example.facade.SftpClient;
-import org.example.facade.Writer;
-import org.example.observer.Button;
-import org.example.observer.IButtonListener;
-import org.example.proxy.Browser;
-import org.example.proxy.BrowserProxy;
-import org.example.proxy.IBrowser;
-import org.example.sigleton.*;
-
-import java.util.concurrent.atomic.AtomicLong;
+import org.example.strategy.*;
 
 public class Main {
     public static void main(String[] args){
+        Encoder encoder = new Encoder();
 
-        Ftp ftpClient = new Ftp("www.abc.co.kr", 22, "/home/etc");
-        ftpClient.connect();
-        ftpClient.moveDirectory();
+        //base 64
+        EncodingStrategy base64 = new Base64Strategy();
 
-        Writer writer = new Writer("text.tmp");
-        writer.fileConnect();
-        writer.fileWrite();
+        //normal
+        EncodingStrategy normal = new NormalStrategy();
 
-        Reader reader = new Reader("text.tmp");
-        reader.fileConnect();
-        reader.fileRead();
+        String message = "hello java";
 
-        reader.fileDisconnect();
-        writer.fileDisconnect();
-        ftpClient.disConnect();
+        encoder.setEncodingStrategy(base64);
+        String base64Result = encoder.getMessage(message);
+        System.out.println(base64Result);
 
-        // facade
-        SftpClient sftpClient = new SftpClient("www.abc.co.kr", 22, "/home/etc", "text.tmp");
-        sftpClient.connect();
-        sftpClient.write();
-        sftpClient.read();
-        sftpClient.disConnect();
+        encoder.setEncodingStrategy(normal);
+        String normalResult = encoder.getMessage(message);
+        System.out.println(normalResult);
+
+        //append
+        AppendStrategy appendStrategy = new AppendStrategy();
+        encoder.setEncodingStrategy(appendStrategy);
+        String appendResult = encoder.getMessage(message);
+        System.out.println(appendResult);
     }
 }
