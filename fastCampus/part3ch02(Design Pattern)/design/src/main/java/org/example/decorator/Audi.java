@@ -15,6 +15,6 @@ public class Audi implements ICar{
 
     @Override
     public void showPrice() {
-        System.out.println("audi 의 가격은 "+this.price+" 원 입니다.");
+        System.out.println("audi 의 가격은 "+this.price+"원 입니다.");
     }
 }
