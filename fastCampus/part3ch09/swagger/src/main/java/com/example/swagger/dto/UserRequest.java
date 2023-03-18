@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class UserRequest {
 
-    @ApiModelProperty(value = "사용자 이름", example = "steve")
+    @ApiModelProperty(value = "사용자 이름", example = "my")
     private String name;
 
 
