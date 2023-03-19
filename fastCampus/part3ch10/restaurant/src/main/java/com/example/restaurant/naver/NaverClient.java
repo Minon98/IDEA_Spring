@@ -1,5 +1,7 @@
 package com.example.restaurant.naver;
 
+import com.example.restaurant.naver.dto.SearchImageRequest;
+import com.example.restaurant.naver.dto.SearchImageResponse;
 import com.example.restaurant.naver.dto.SearchLocalRequest;
 import com.example.restaurant.naver.dto.SearchLocalResponse;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,8 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import java.lang.reflect.ParameterizedType;
 
 @Component
 public class NaverClient {
@@ -28,7 +28,7 @@ public class NaverClient {
     @Value("${naver.url.search.image}")
     private String naverImageSearchUrl;
 
-    public SearchLocalResponse localSearch(SearchLocalRequest searchLocalRequest){
+    public SearchLocalResponse searchLocal(SearchLocalRequest searchLocalRequest){
         var uri = UriComponentsBuilder.fromUriString(naverLocalSearchUrl)
                 .queryParams(searchLocalRequest.toMultiValueMap())
                 .build()
@@ -53,7 +53,29 @@ public class NaverClient {
         return responseEntity.getBody();
     }
 
-    public void imageSearch(){
+    public SearchImageResponse searchImage(SearchImageRequest searchImageRequest){
+        var uri = UriComponentsBuilder.fromUriString(naverImageSearchUrl)
+                .queryParams(searchImageRequest.toMultiValueMap())
+                .build()
+                .encode()
+                .toUri();
+
+        var headers = new HttpHeaders();
+        headers.set("X-Naver-Client-Id", naverClientId);
+        headers.set("X-Naver-Client-Secret", naverClientSecret);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        var httpEntity = new HttpEntity<>(headers);
+        var responseType = new ParameterizedTypeReference<SearchImageResponse>(){};
+
+        var responseEntity = new RestTemplate().exchange(
+                uri,
+                HttpMethod.GET,
+                httpEntity,
+                responseType
+        );
+
+        return responseEntity.getBody();
 
     }
 }

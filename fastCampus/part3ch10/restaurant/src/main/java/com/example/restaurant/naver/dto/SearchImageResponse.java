@@ -9,27 +9,22 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SearchLocalResponse {
+public class SearchImageResponse {
 
     private String lastBuildDate;
     private int total;
     private int start;
     private int display;
-    private String category;
-    private List<SearchLocalItem> items;
+    private List<SearchImageItem> items;
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class SearchLocalItem{
+    public static class SearchImageItem{
         private String title;
         private String link;
-        private String description;
-        private String telephone;
-        private String address;
-        private String roadAddress;
-        private int mapx;
-        private int mapy;
-
+        private String thumbnail;
+        private String sizeheight;
+        private String sizewidth;
     }
 }
