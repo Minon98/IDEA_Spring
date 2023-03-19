@@ -15,7 +15,6 @@ public class SearchLocalResponse {
     private int total;
     private int start;
     private int display;
-    private String category;
     private List<SearchLocalItem> items;
 
     @Data
@@ -25,6 +24,7 @@ public class SearchLocalResponse {
         private String title;
         private String link;
         private String description;
+        private String category;
         private String telephone;
         private String address;
         private String roadAddress;

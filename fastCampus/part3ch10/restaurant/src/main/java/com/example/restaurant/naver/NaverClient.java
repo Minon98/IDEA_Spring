@@ -19,6 +19,7 @@ public class NaverClient {
 
     @Value("${naver.client.id}")
     private String naverClientId;
+
     @Value("${naver.client.secret}")
     private String naverClientSecret;
 
