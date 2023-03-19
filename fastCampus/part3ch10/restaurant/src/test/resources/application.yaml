@@ -3,6 +3,6 @@ naver:
     search:
       local: https://openapi.naver.com/v1/search/local.json
       image: https://openapi.naver.com/v1/search/image
-    client:
-      id: 1ZTK66YKs0XNmKQyf05z
-      secret: jYEdB2W4VV
+  client:
+    id: 1ZTK66YKs0XNmKQyf05z
+    secret: 04J0qlhcXo
